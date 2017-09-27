@@ -36,23 +36,51 @@ namespace od
 
       mode_ = type;
 
-      if(type == SIFT) {
+      switch(type)
+      {
+        case SIFT:
+          feature_detector_ = cv::xfeatures2d::SIFT::create();
+        case ORB:
+          feature_detector_ = cv::ORB::create();
+        case SURF:
+          feature_detector_ = cv::xfeatures2d::SURF::create();
+        case ORB_GPU:
+          feature_detector_ = cv::cuda::ORB::create();
+        case SIFT_GPU:
+          sift_gpu_ = new SiftGPU;
+          char *argv[] = {(char *) "-fo", (char *) "-1", (char *) "-v", (char *) "3", (char *) "-cuda"};
+          int argc = sizeof(argv) / sizeof(char *);
+          sift_gpu_->ParseParam(argc, argv);
+          if(sift_gpu_->CreateContextGL() != SiftGPU::SIFTGPU_FULL_SUPPORTED)
+            std::cout << "FATAL ERROR cannot create SIFTGPU context";
+      }
+
+      /*
+      if(type == SIFT)
+      {
         feature_detector_ = cv::xfeatures2d::SIFT::create();
-      } else if(type == ORB) {
+      }
+      else if(type == ORB)
+      {
         feature_detector_ = cv::ORB::create();
-      } else if(type == SURF) {
+      }
+      else if(type == SURF)
+      {
         feature_detector_ = cv::xfeatures2d::SURF::create();
-      } else if(type == ORB_GPU) {
+      }
+      else if(type == ORB_GPU)
+      {
         feature_detector_ = cv::cuda::ORB::create();
-      } else if(type == SIFT_GPU) {
+      }
+      else if(type == SIFT_GPU)
+      {
         sift_gpu_ = new SiftGPU;
-        //char * argv[] = {(char *)"-fo", (char *)"-1",  (char *)"-v", (char *)"1"};
         char *argv[] = {(char *) "-fo", (char *) "-1", (char *) "-v", (char *) "3", (char *) "-cuda"};
         int argc = sizeof(argv) / sizeof(char *);
         sift_gpu_->ParseParam(argc, argv);
         if(sift_gpu_->CreateContextGL() != SiftGPU::SIFTGPU_FULL_SUPPORTED)
           std::cout << "FATAL ERROR cannot create SIFTGPU context";
-      }
+      }*/
     }
 
     //always return Opencv type keypoints
