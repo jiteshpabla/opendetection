@@ -78,7 +78,7 @@ Dependencies
     - GLEW (package name - libglew-dev)
     
 Installing Open Detection
---
+-------------------------
 Download the source from https://github.com/krips89/opendetection. With the above dependencies installed, OD should compile fine. The code while platform independent, is only tested and run in Linux machine. Instructions for the usage for linux are provided below:
 
 Compile out of source using cmake+your favorite compiler. For example:
