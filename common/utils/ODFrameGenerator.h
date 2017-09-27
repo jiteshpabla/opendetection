@@ -18,8 +18,6 @@ namespace od
     GENERATOR_TYPE_FILE_LIST, GENERATOR_TYPE_DEVICE
   };
 
-
-
   /** \brief The FrameGenerator class for capturing and reading Scenes conveniently.
    * Templated with two parameters - SceneType identifying a Scene class, and TYPE identifying the type of input. After the instantiation with a correct TYPE, use the function
    * getNextFrame() to get an instance of next scene of SceneType. getNextFrame() returns valid scenes until all scenes matched are exhausted - the time  when 'isValid()' is false.
@@ -27,9 +25,11 @@ namespace od
    * \tparam SceneT One of the Scene classes - ODSceneImage or ODScenePointCloud
    * \tparam TYPE TYPE can be GENERATOR_TYPE_FILE_LIST which means you provide the list of scene files to be returned by the FrameGenerator in the constructor (for eg. \/home/username/pics/*.jpg)
    * Or it can be GENERATOR_TYPE_DEVICE which picks up the webcam or the kinect based on the SceneType.
- * \author Kripasindhu Sarkar
- *
- */
+   *
+   * \author Kripasindhu Sarkar
+   *
+   */
+
   template<typename SceneT, GeneratorType TYPE>
   class ODFrameGenerator
   {
@@ -146,7 +146,6 @@ namespace od
   };
 */
 
-
   template<>
   class ODFrameGenerator<ODScenePointCloud<pcl::PointXYZRGBA> , GENERATOR_TYPE_DEVICE>
   {
@@ -156,7 +155,8 @@ namespace od
     typedef pcl::PointCloud<PointT>::Ptr PointCloudPtr;
     typedef pcl::PointCloud<PointT>::ConstPtr PointCloudConstPtr;
 
-    /* A simple class for capturing data from an OpenNI camera */
+    /** A simple class for capturing data from an OpenNI camera
+      */
     ODFrameGenerator(std::string input = "") : grabber_(input), most_recent_frame_(), frame_counter_(0), active_(true)
     {
       boost::function<void(const PointCloudConstPtr&)> frame_cb = boost::bind (&ODFrameGenerator<ODScenePointCloud<pcl::PointXYZRGBA> , GENERATOR_TYPE_DEVICE>::onNewFrame, this, _1);
@@ -167,7 +167,8 @@ namespace od
 
     ~ODFrameGenerator()
     {
-      // Stop the grabber when shutting down
+      /**Stop the grabber when shutting down
+        */
       grabber_.stop ();
     }
 
@@ -191,7 +192,8 @@ namespace od
     }
     void onKeyboardEvent (const pcl::visualization::KeyboardEvent & event)
     {
-      // When the spacebar is pressed, trigger a frame capture
+      /**When the spacebar is pressed, trigger a frame capture
+        */
       mutex_.lock ();
       if (event.keyDown () && event.getKeySym () == "e")
       {
